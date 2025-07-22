@@ -1,103 +1,158 @@
-import Image from "next/image";
+'use client';
+
+import { useState, useEffect } from 'react';
+import Select from 'react-select';
+import { FaBolt, FaCar, FaPlane } from 'react-icons/fa';
+
+const carModels = [
+  { label: 'Maruti Alto 800 (Petrol)', value: 0.18 },
+  { label: 'Maruti Swift (Petrol)', value: 0.19 },
+  { label: 'Hyundai i20 (Diesel)', value: 0.22 },
+  { label: 'Hyundai Creta (Petrol)', value: 0.21 },
+  { label: 'Tata Nexon EV', value: 0.05 },
+  { label: 'Tata Punch (Petrol)', value: 0.20 },
+  { label: 'Tata Tiago (Petrol)', value: 0.19 },
+  { label: 'Toyota Fortuner (Diesel)', value: 0.25 },
+  { label: 'Toyota Innova Crysta (Diesel)', value: 0.24 },
+  { label: 'Toyota Camry Hybrid', value: 0.11 },
+  { label: 'Mahindra Thar (Diesel)', value: 0.23 },
+  { label: 'Mahindra XUV700 (Petrol)', value: 0.21 },
+  { label: 'Mahindra Scorpio-N (Diesel)', value: 0.24 },
+  { label: 'Kia Seltos (Petrol)', value: 0.21 },
+  { label: 'Kia Sonet (Diesel)', value: 0.22 },
+  { label: 'Renault Kwid (Petrol)', value: 0.18 },
+  { label: 'Renault Triber (Petrol)', value: 0.19 },
+  { label: 'Honda City (Petrol)', value: 0.20 },
+  { label: 'Honda Amaze (Diesel)', value: 0.22 },
+  { label: 'Skoda Kushaq (Petrol)', value: 0.21 },
+  { label: 'Volkswagen Virtus (Petrol)', value: 0.20 },
+  { label: 'MG Hector (Petrol)', value: 0.23 },
+  { label: 'MG ZS EV (Electric)', value: 0.04 },
+  { label: 'BYD e6 (Electric)', value: 0.03 },
+  { label: 'Hyundai Kona Electric', value: 0.04 }
+];
+
+const tips = [
+  'Switch to renewable energy sources 🌞',
+  'Carpool whenever possible 🚗',
+  'Avoid single-use plastics ♻️',
+  'Eat more plant-based meals 🥗',
+  'Use public transportation 🚌',
+  'Ride a bicycle or walk 🚶‍♀️',
+  'Unplug devices when not in use 🔌',
+  'Opt for energy-efficient appliances 💡',
+  'Recycle and compost at home ♻️',
+  'Fly less and offset flights ✈️',
+  'Use a fan instead of AC when possible 🌬️',
+  'Reduce meat and dairy consumption 🐄',
+  'Buy locally produced goods 🛍️',
+  'Practice water conservation 🚿',
+  'Switch to LED lights 💡',
+  'Avoid fast fashion 👗',
+  'Grow your own veggies 🌱',
+  'Buy in bulk to reduce packaging 📦',
+  'Read digital books instead of printed 📚',
+  'Install solar panels if possible ☀️'
+];
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [electricity, setElectricity] = useState(0);
+  const [carKm, setCarKm] = useState(0);
+  const [flightHours, setFlightHours] = useState(0);
+  const [carModel, setCarModel] = useState(carModels[0]);
+  const [footprint, setFootprint] = useState<string | null>(null);
+  const [tipIndex, setTipIndex] = useState(0);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTipIndex((prev) => (prev + 1) % tips.length);
+    }, 6000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const calculateFootprint = () => {
+    const electricityFactor = 0.85;
+    const flightFactor = 90;
+    const carFactor = carModel.value;
+
+    const total =
+      electricity * electricityFactor +
+      carKm * carFactor +
+      flightHours * flightFactor;
+
+    setFootprint(total.toFixed(2));
+  };
+
+  return (
+    <main className="min-h-screen bg-gradient-to-br from-green-50 to-green-100 p-6 text-green-900">
+      <div className="max-w-2xl mx-auto space-y-8">
+        <h1 className="text-5xl font-extrabold text-center text-green-700">🌍 GreenGauge</h1>
+        <div className="bg-white p-6 rounded-2xl shadow-xl space-y-6">
+
+          <div>
+            <label className="font-medium flex items-center gap-2">
+              <FaBolt /> Electricity Usage (kWh/month)
+            </label>
+            <input
+              type="number"
+              value={electricity}
+              onChange={(e) => setElectricity(Number(e.target.value))}
+              className="mt-1 w-full border rounded px-4 py-2"
+              placeholder="e.g. 150"
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+          </div>w
+
+          <div>
+            <label className="font-medium flex items-center gap-2">
+              <FaCar /> Car Travel (km/month)
+            </label>
+            <input
+              type="number"
+              value={carKm}
+              onChange={(e) => setCarKm(Number(e.target.value))}
+              className="mt-1 w-full border rounded px-4 py-2"
+              placeholder="e.g. 300"
+            />
+            <div className="mt-2">
+              <Select
+                options={carModels}
+                defaultValue={carModel}
+                onChange={(selected) => selected && setCarModel(selected)}
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="font-medium flex items-center gap-2">
+              <FaPlane /> Flight Travel (hours/year)
+            </label>
+            <input
+              type="number"
+              value={flightHours}
+              onChange={(e) => setFlightHours(Number(e.target.value))}
+              className="mt-1 w-full border rounded px-4 py-2"
+              placeholder="e.g. 10"
+            />
+          </div>
+
+          <button
+            onClick={calculateFootprint}
+            className="w-full bg-green-700 hover:bg-green-800 text-white py-2 px-4 rounded"
           >
-            Read our docs
-          </a>
+            Calculate
+          </button>
+
+          {footprint && (
+            <div className="bg-green-50 border border-green-300 p-4 rounded text-center text-lg font-semibold">
+              🌱 Estimated Carbon Footprint: <span className="text-green-800">{footprint} kg CO₂/year</span>
+            </div>
+          )}
+
+          <div className="bg-white text-sm text-gray-700 p-3 rounded shadow">
+            💡 Tip: {tips[tipIndex]}
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+      </div>
+    </main>
   );
 }
