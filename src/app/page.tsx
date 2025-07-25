@@ -98,9 +98,9 @@ export default function Home() {
               value={electricity}
               onChange={(e) => setElectricity(Number(e.target.value))}
               className="mt-1 w-full border rounded px-4 py-2"
-              placeholder="e.g. 150"
+   
             />
-          </div>w
+          </div>
 
           <div>
             <label className="font-medium flex items-center gap-2">
@@ -111,7 +111,6 @@ export default function Home() {
               value={carKm}
               onChange={(e) => setCarKm(Number(e.target.value))}
               className="mt-1 w-full border rounded px-4 py-2"
-              placeholder="e.g. 300"
             />
             <div className="mt-2">
               <Select
@@ -131,7 +130,6 @@ export default function Home() {
               value={flightHours}
               onChange={(e) => setFlightHours(Number(e.target.value))}
               className="mt-1 w-full border rounded px-4 py-2"
-              placeholder="e.g. 10"
             />
           </div>
 
