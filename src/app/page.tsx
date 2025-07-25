@@ -84,7 +84,15 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-green-50 to-green-100 p-6 text-green-900">
+    <main
+  className="min-h-screen bg-green-50 bg-center bg-cover bg-no-repeat p-6 text-green-900"
+  style={{
+    backgroundImage: "url('/logo.png'), linear-gradient(to bottom right, #f0fdf4, #d9f99d)",
+    backgroundBlendMode: 'overlay',
+    opacity: 0.95,
+  }}
+>
+
       <div className="max-w-2xl mx-auto space-y-8">
         <h1 className="text-5xl font-extrabold text-center text-green-700">🌍 GreenGauge</h1>
         <div className="bg-white p-6 rounded-2xl shadow-xl space-y-6">
