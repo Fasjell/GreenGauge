@@ -87,7 +87,7 @@ export default function Home() {
     <main
   className="min-h-screen bg-green-50 bg-center bg-cover bg-no-repeat p-6 text-green-900"
   style={{
-    backgroundImage: "url('/logo.png'), linear-gradient(to bottom right, #f0fdf4, #d9f99d)",
+    backgroundImage: "url('/greengauge.jpg'), linear-gradient(to bottom right, #f0fdf4, #d9f99d)",
     backgroundBlendMode: 'overlay',
     opacity: 0.95,
   }}
