@@ -134,13 +134,14 @@ export default function Home() {
           </div>
            <div
       className="min-h-screen bg-cover bg-center"
-      style={{ backgroundImage: "url('/greengauge.jpg')" }}
-    >
+      style={{ backgroundImage: "url('/greengauge.jpg')" }}>
+    
       <div className="bg-white/80 p-10 rounded-xl max-w-xl mx-auto mt-20 shadow-xl">
         <h1 className="text-4xl font-bold text-center mb-4">Welcome to GreenGauge</h1>
         <p className="text-center">Track your carbon footprint in real time</p>
         {/* your input UI goes here */}
       </div>
+             </div>
 
           <button
             onClick={calculateFootprint}
